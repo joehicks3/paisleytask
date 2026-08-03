@@ -1,5 +1,5 @@
 import { Task } from "@/types/task";
-import TaskRow from "./TaskRow";
+import TaskRow from "./tasks/TaskRow";
 
 type TaskListProps = {
   tasks: Task[];

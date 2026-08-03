@@ -1,10 +1,11 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getTasks } from "@/lib/taskService";
-import TaskList from "@/components/TaskList";
+import TaskSection from "@/components/tasks/TaskSection";
 import Header from "@/components/Header";
 import QuickAddTask from "@/components/QuickAddTask";
 import Card from "@/components/Card"
+import { sortDueToday, sortOverdue, sortEverythingElse } from "@/lib/taskSorting";
 
 export default async function Home() {
   const supabase = await createClient();
@@ -19,6 +20,32 @@ export default async function Home() {
 
   const tasks = await getTasks();
 
+  const today = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/New_York",
+  }).format(new Date());
+  
+  const dueToday = sortDueToday(
+    tasks.filter(
+      (task) => task.deadline === today
+    )
+  );
+  
+  const overdue = sortOverdue(
+    tasks.filter(
+      (task) =>
+        task.deadline &&
+        task.deadline < today
+    )
+  );
+  
+  const everythingElse = sortEverythingElse(
+    tasks.filter(
+      (task) =>
+        !task.deadline ||
+        task.deadline > today
+    )
+  );
+
   return (
     <main className="min-h-screen bg-zinc-950 text-zinc-100 p-8">
       <div className="max-w-4xl mx-auto">
@@ -28,11 +55,22 @@ export default async function Home() {
           <Card title="New Task">
               <QuickAddTask />
           </Card>
-          <Card title={`Open Tasks (${tasks.length})`}>
-              <TaskList tasks={tasks} />
-          </Card>
+          <TaskSection
+            title="Due Today"
+            tasks={dueToday}
+          />
+
+          <TaskSection
+            title="Overdue"
+            tasks={overdue}
+          />
+
+          <TaskSection
+            title="Everything Else"
+            tasks={everythingElse}
+          />
         </div>
-      </div>
+        </div>
     </main>
   );
 }

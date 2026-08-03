@@ -18,3 +18,24 @@ export function getPriorityColor(priority: Priority) {
       return "bg-zinc-800 text-zinc-300";
   }
 }
+
+export function getDeadlineColor(deadline: string | null) {
+  if (!deadline) {
+    return "text-zinc-500";
+  }
+
+  const today = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/New_York",
+  }).format(new Date());
+
+  if (deadline === today) {
+    return "text-green-400";
+  }
+
+  if (deadline < today) {
+    return "text-red-400";
+  }
+
+  return "text-zinc-500";
+}
+

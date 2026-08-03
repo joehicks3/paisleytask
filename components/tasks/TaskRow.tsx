@@ -1,7 +1,8 @@
 import { Task } from "@/types/task";
-import CompleteCheckbox from "./CompleteCheckbox";
+import CompleteCheckbox from "../CompleteCheckbox";
 import { formatTaskDate } from "@/lib/formatters";
-import { getPriorityColor } from "@/lib/taskHelpers";
+import { getPriorityColor, getDeadlineColor } from "@/lib/taskHelpers";
+import Link from "next/link";
 
 type TaskRowProps = {
   task: Task;
@@ -16,9 +17,12 @@ export default function TaskRow({ task }: TaskRowProps) {
     <CompleteCheckbox taskId={task.id} />
 
     <div>
-      <div className="font-medium text-zinc-100">
+      <Link
+        href={`/tasks/${task.id}`}
+        className="font-medium text-zinc-100 hover:text-fuchsia-400 transition-colors"
+      >
         {task.title}
-      </div>
+      </Link>
 
       <div className="text-sm text-zinc-500">
         {task.estimated_time}
@@ -37,7 +41,9 @@ export default function TaskRow({ task }: TaskRowProps) {
 <div className="flex flex-col items-end gap-2">
 
   {task.deadline && (
-    <div className="text-sm text-zinc-500">
+    <div
+      className={`text-sm ${getDeadlineColor(task.deadline)}`}
+    >
       Due {formatTaskDate(task.deadline)}
     </div>
   )}

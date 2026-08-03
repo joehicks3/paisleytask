@@ -59,3 +59,37 @@ export async function completeTask(taskId: string) {
     throw new Error("Unable to complete task.");
   }
 }
+
+export async function getTask(id: string): Promise<Task | null> {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
+    .from("tasks")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (error) {
+    console.error(error);
+    return null;
+  }
+
+  return data;
+}
+
+export async function updateTask(
+  id: string,
+  updates: Partial<Omit<Task, "id" | "created_at" | "completed_at">>
+) {
+  const supabase = await createClient();
+
+  const { error } = await supabase
+    .from("tasks")
+    .update(updates)
+    .eq("id", id);
+
+  if (error) {
+    console.error(error);
+    throw new Error("Unable to update task.");
+  }
+}
