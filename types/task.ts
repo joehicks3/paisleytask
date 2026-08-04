@@ -35,3 +35,10 @@ export type Task = {
 
   completed_at: string | null;
 };
+
+export type TaskFilter =
+  | "all"
+  | "today"
+  | "week"
+  | "overdue"
+  | "quickwins";

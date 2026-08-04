@@ -6,6 +6,7 @@ import Header from "@/components/Header";
 import QuickAddTask from "@/components/QuickAddTask";
 import Card from "@/components/Card"
 import { sortDueToday, sortOverdue, sortEverythingElse } from "@/lib/taskSorting";
+import TaskBrowser from "@/components/tasks/TaskBrowser";
 
 export default async function Home() {
   const supabase = await createClient();
@@ -55,20 +56,7 @@ export default async function Home() {
           <Card title="New Task">
               <QuickAddTask />
           </Card>
-          <TaskSection
-            title="Due Today"
-            tasks={dueToday}
-          />
-
-          <TaskSection
-            title="Overdue"
-            tasks={overdue}
-          />
-
-          <TaskSection
-            title="Everything Else"
-            tasks={everythingElse}
-          />
+          <TaskBrowser tasks={tasks} />
         </div>
         </div>
     </main>
