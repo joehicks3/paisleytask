@@ -1,5 +1,6 @@
 import { Task } from "@/types/task";
 import { updateTaskAction } from "@/app/actions";
+import DeleteTaskButton from "./DeleteTaskButton";
 
 type TaskFormProps = {
   task: Task;
@@ -105,10 +106,12 @@ export default function TaskForm({ task }: TaskFormProps) {
   />
 </div>
 </div>
-<div className="mt-8 flex justify-end border-t border-zinc-800 pt-6">
+<div className="mt-8 flex items-center justify-between border-t border-zinc-800 pt-6">
+  <DeleteTaskButton taskId={task.id} />
+
   <button
     type="submit"
-    className="rounded-md bg-fuchsia-600 px-5 py-2 font-medium hover:bg-fuchsia-500"
+    className="rounded-md bg-fuchsia-600 px-5 py-2 font-medium transition-colors hover:bg-fuchsia-500"
   >
     Save Changes
   </button>

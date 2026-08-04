@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { createTask, completeTask, updateTask } from "@/lib/taskService";
+import { createTask, completeTask, updateTask, deleteTask } from "@/lib/taskService";
 import { Task, AssignedTo } from "@/types/task";
 import { redirect } from "next/navigation";
 
@@ -51,6 +51,18 @@ export async function updateTaskAction(formData: FormData) {
     estimated_time: formData.get("estimatedTime")?.toString() as Task["estimated_time"],
     deadline: formData.get("deadline")?.toString() || null,
   });
+
+  redirect("/");
+}
+
+export async function deleteTaskAction(formData: FormData) {
+  const taskId = formData.get("taskId")?.toString();
+
+  if (!taskId) {
+    throw new Error("Missing task id.");
+  }
+
+  await deleteTask(taskId);
 
   redirect("/");
 }
