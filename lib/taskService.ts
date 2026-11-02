@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { Task } from "@/types/task";
+import { insertTask } from "@/lib/taskInsert.mjs";
 
 export async function getTasks(): Promise<Task[]> {
   const supabase = await createClient();
@@ -28,7 +29,7 @@ export async function createTask(
 ) {
   const supabase = await createClient();
 
-  const { error } = await supabase.from("tasks").insert({
+  await insertTask(supabase, {
     title,
     notes,
     priority,
@@ -36,11 +37,6 @@ export async function createTask(
     assigned_to: assignedTo,
     deadline,
   });
-
-  if (error) {
-    console.error(error);
-    throw new Error("Unable to create task.");
-  }
 }
 
 export async function completeTask(taskId: string) {

@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test tests",
+    "quick-capture:credential": "node scripts/generate-quick-capture-token.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.4",
